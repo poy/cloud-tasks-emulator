@@ -1,4 +1,4 @@
-package cloudtaskemulator
+package cloudtasksemulator
 
 import (
 	"log"

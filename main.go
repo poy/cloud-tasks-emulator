@@ -8,7 +8,7 @@ import (
 	"regexp"
 	"strings"
 
-	"github.com/poy/cloud-tasks-emulator/pkg/cloudtaskemulator"
+	"github.com/poy/cloud-tasks-emulator/pkg/cloudtasksemulator"
 	tasks "google.golang.org/genproto/googleapis/cloud/tasks/v2"
 	"google.golang.org/grpc"
 )
@@ -26,7 +26,7 @@ func (i *arrayFlags) Set(value string) error {
 }
 
 // Creates an initial queue on the emulator
-func createInitialQueue(emulatorServer *cloudtaskemulator.Server, name string) {
+func createInitialQueue(emulatorServer *cloudtasksemulator.Server, name string) {
 	print(fmt.Sprintf("Creating initial queue %s\n", name))
 
 	r := regexp.MustCompile("/queues/[A-Za-z0-9-]+$")
@@ -57,7 +57,7 @@ func main() {
 	flag.Parse()
 
 	if *openidIssuer != "" {
-		srv, err := cloudtaskemulator.ConfigureOpenIdIssuer(*openidIssuer)
+		srv, err := cloudtasksemulator.ConfigureOpenIdIssuer(*openidIssuer)
 		if err != nil {
 			panic(err)
 		}
@@ -72,7 +72,7 @@ func main() {
 	print(fmt.Sprintf("Starting cloud tasks emulator, listening on %v:%v\n", *host, *port))
 
 	grpcServer := grpc.NewServer()
-	emulatorServer := cloudtaskemulator.NewServer()
+	emulatorServer := cloudtasksemulator.NewServer()
 	emulatorServer.Options.HardResetOnPurgeQueue = *hardResetOnPurgeQueue
 	tasks.RegisterCloudTasksServer(grpcServer, emulatorServer)
 
